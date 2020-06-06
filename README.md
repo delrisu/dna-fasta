@@ -1,1 +1,1 @@
-# dna-fast
+# dna-fasta
