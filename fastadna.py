@@ -24,7 +24,7 @@ def run():
   parser = argparse.ArgumentParser()
   parser.add_argument("-f","--file", help="name of the file with extension in program catalog or path to file. ex: fastadna.py --file test.fa.")
   parser.add_argument("-l","--length", help="shows length of all sequences. Use ONLY with --file [-f.]", action="store_true")
-  parser.add_argument("-enl", "--extranl", help="print extra new lines in result of --length [-l].", action="store_true")
+  parser.add_argument("-enl", "--extranl", help="print extra new lines between results of --length [-l].", action="store_true")
   parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.1")
 
   args = parser.parse_args()
