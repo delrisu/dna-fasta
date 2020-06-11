@@ -1,5 +1,6 @@
 import argparse
 import re
+import textwrap
 
 def print_lengths(file_name, extra = False):
   f = open(file_name, "r")
@@ -41,7 +42,8 @@ def view(file_name, arg):
           else:
             data+=line[:-1]
             if (len(data) >= coords[1]):
-              print(data[coords[0]:coords[1]])
+              for wrap in textwrap.wrap(data[coords[0]:coords[1]],70):
+                print(wrap)
               break
 
         if(line[0] == ">"):
