@@ -2,6 +2,17 @@ import argparse
 import re
 import textwrap
 
+def print_long(table):
+  for i in range(0, len(table)):
+    if(i > 0 and i%70 == 0):
+      print(table[i])
+    else:
+      print(table[i], end='')
+
+def slice_middle(table, arg):
+  table = table[:arg[0]] + table[arg[1]:]
+  print_long(table)
+
 def print_lengths(file_name, extra = False):
   with open(file_name, "r") as f:
 
@@ -44,9 +55,8 @@ def view(file_name, arg):
             else:
               data+=line[:-1]
               if (len(data) >= coords[1]):
-                for wrap in textwrap.wrap(data[coords[0]:coords[1]],70):
-                  print(wrap)
-                  outed = True
+                print_long(data[coords[0]:coords[1]])   
+                outed = True
                 break
 
           if(line[0] == ">"):
@@ -54,8 +64,7 @@ def view(file_name, arg):
               print(line[:-1] + ' ' + arg[1])
               found = True
         if(found and not outed):
-          for wrap in textwrap.wrap(data[coords[0]:coords[1]],70):
-            print(wrap)      
+          print_long(data[coords[0]:coords[1]])     
     else:
       found = False
       for line in f:
@@ -67,14 +76,6 @@ def view(file_name, arg):
         if(line[0] == ">"):
           if(arg[0] == line.split()[0][1:]):
             found = True
-
-def slice_middle(table, arg):
-  table = table[:arg[0]] + table[arg[1]:]
-  for i in range(0, len(table)):
-    if(i > 0 and i%70 == 0):
-      print(table[i])
-    else:
-      print(table[i], end='')
 
 def delete(file_name, arg):
   with open(file_name, "r") as f:
