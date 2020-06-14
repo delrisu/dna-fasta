@@ -130,6 +130,7 @@ def insert(file_name, arg):
       if(line[0] == ">"):
         if(arg[0] == line.split()[0][1:]):
           found = True
+          print(line, end='')
     insert_fragment(data,int(arg[1]),arg[2])
 
 def insert_random(file_name, arg):
