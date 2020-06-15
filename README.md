@@ -6,7 +6,7 @@
 
 ```
 --file [-f] - name of the file with extension in program catalog or path to file. ex: fastadna.py --file test.fa
---length [-l] - shows length of all sequences. Use ONLY with --file [-f]
+--length [-l] - shows length of all sequences.
 --view [-v] - Shows sequence. Slice with 'name <start:end>'
 --delete [-d] - Shows sequence with part deleted. 'name start:end'
 --insert [-i] - Shows sequence with added part. 'name start additional_sequence'
