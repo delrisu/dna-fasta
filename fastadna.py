@@ -1,5 +1,4 @@
 import argparse
-import textwrap
 import random
 from itertools import groupby
 
@@ -86,7 +85,7 @@ def run():
   group.add_argument("-ir", "--insert_random", nargs=3, help="Shows sequence with added random part. 'name start length'")
 
 
-  parser.add_argument("-n", "--name", action="store_true")
+  parser.add_argument("-n", "--name", action="store_true", help="Prints name in --view [-v]")
   parser.add_argument("-ver", "--version", action="version", version="%(prog)s 0.1")
 
   args = parser.parse_args()
