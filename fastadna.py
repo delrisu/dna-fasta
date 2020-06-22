@@ -5,9 +5,7 @@ from itertools import groupby
 
 def read_all(file_name):
   fh = open(file_name, 'r')
-
   faiter = (x[1] for x in groupby(fh, lambda line: line[0] == ">"))
-
   for header in faiter:
     headerStr = header.__next__()[:].strip()
     seq = "".join(s.strip() for s in faiter.__next__())
@@ -38,12 +36,13 @@ def print_lengths(file_name):
     print(headerStr)
     print(len(seq))
 
-def view(file_name, arg):
+def view(file_name, arg, name):
   fiter = read_all(file_name)
   for ff in fiter:
     headerStr, seq = ff 
     if(arg[0] == headerStr.split()[0][1:]):
-      print(headerStr)
+      if name:
+        print(headerStr)
       if(len(arg) > 1):
         coords = list(map(int,arg[1].split(':')))
         print_long(seq[coords[0]:coords[1]])
@@ -86,6 +85,8 @@ def run():
   group.add_argument("-i", "--insert", nargs=3, help="Shows sequence with added part. 'name start additional_sequence'")
   group.add_argument("-ir", "--insert_random", nargs=3, help="Shows sequence with added random part. 'name start length'")
 
+
+  parser.add_argument("-n", "--name", action="store_true")
   parser.add_argument("-ver", "--version", action="version", version="%(prog)s 0.1")
 
   args = parser.parse_args()
@@ -94,7 +95,10 @@ def run():
     if args.length:
       print_lengths(args.file)
     elif args.view:
-      view(args.file, args.view)
+      if args.name:
+        view(args.file, args.view, True)
+      else:
+        view(args.file, args.view, False)
     elif args.delete:
       delete(args.file, args.delete)
     elif args.insert:
