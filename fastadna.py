@@ -2,6 +2,8 @@ import argparse
 import random
 from itertools import groupby
 
+LINE_LENGTH = 3
+
 def read_all(file_name):
   fh = open(file_name, 'r')
   faiter = (x[1] for x in groupby(fh, lambda line: line[0] == ">"))
@@ -12,7 +14,7 @@ def read_all(file_name):
 
 def print_long(table):
   for i in range(0, len(table)):
-    if((i+1)%70 == 0):
+    if((i+1)%LINE_LENGTH == 0):
       print(table[i])
     else:
       print(table[i], end='')
@@ -87,10 +89,16 @@ def run():
 
   parser.add_argument("-n", "--name", action="store_true", help="Prints name in --view [-v]")
   parser.add_argument("-ver", "--version", action="version", version="%(prog)s 0.1")
+  parser.add_argument("-ll", "--line_length", nargs=1, help="Allows to decide lenght of line in prints")
 
   args = parser.parse_args()
 
+  
+
   if args.file:
+    if args.line_length:
+      global LINE_LENGTH
+      LINE_LENGTH = int(args.line_length[0])
     if args.length:
       print_lengths(args.file)
     elif args.view:
