@@ -89,9 +89,9 @@ def insert_random(file_name, arg):
 
 def translocate(file_name, arg):
   if len(arg) < 3:
-    print("Error: Too few arguments in translate")
+    print("Error: Too few arguments in translocate")
   elif len(arg) > 4:
-    print("Error: Too many arguments in translate")
+    print("Error: Too many arguments in translocate")
   else:
     dic = {}
     name_dic = {}
@@ -121,6 +121,18 @@ def translocate(file_name, arg):
       print(name_dic[key])
       print_long(dic[key])
 
+def reverse(file_name, arg):
+  trans = str.maketrans("ATCG", "TAGC")
+  fiter = read_all(file_name)
+  for ff in fiter:
+    headerStr, seq = ff 
+    if(arg[0] == headerStr.split()[0][1:]):
+      if(len(arg) > 1):
+        coords = list(map(int,arg[1].split(':')))
+        print_long(seq[coords[0]:coords[1]:-1].translate(trans))
+      else:
+        print_long(seq[::-1].translate(trans))
+
 
 def run():
   parser = argparse.ArgumentParser()
@@ -128,11 +140,12 @@ def run():
   parser.add_argument("file", help="name of the file with extension in program catalog or path to file.")
 
   group.add_argument("-l","--length", help="shows length of all sequences.", action="store_true")
-  group.add_argument("-v", "--view", nargs='+', help="Shows sequence. Slice with 'name start:end'")
-  group.add_argument("-d", "--delete", nargs=2, help="Shows sequence with part deleted. 'name start:end'")
-  group.add_argument("-i", "--insert", nargs=3, help="Shows sequence with added part. 'name start additional_sequence'")
-  group.add_argument("-ir", "--insert_random", nargs=3, help="Shows sequence with added random part. 'name start length'")
-  group.add_argument("-t", "--translocate", nargs="+")
+  group.add_argument("-v", "--view", nargs='+', help="Shows sequence. Use: --view name <start:end>")
+  group.add_argument("-d", "--delete", nargs=2, help="Shows sequence with part deleted. Use: --delete name start:end")
+  group.add_argument("-i", "--insert", nargs=3, help="Shows sequence with added part. Use: --insert name start additional_sequence")
+  group.add_argument("-ir", "--insert_random", nargs=3, help="Shows sequence with added random part. Use: --insert_random name start length")
+  group.add_argument("-t", "--translocate", nargs="+", help="Translocates fragment. Use: --translocate name1 start:end <name2> index")
+  group.add_argument("-r", "--reverse", nargs="+", help="Reverses and translates fragment. Use: --reverse name <start:end>")
 
 
   parser.add_argument("-n", "--name", action="store_true", help="Prints name in --view [-v]")
@@ -162,6 +175,8 @@ def run():
       insert_random(args.file, args.insert_random)
     elif args.translocate:
       translocate(args.file, args.translocate)
+    elif args.reverse:
+      reverse(args.file, args.reverse)
   if args.length and not args.file:
     parser.error("File should be provided first, use --help [-h] for more information.")
 
