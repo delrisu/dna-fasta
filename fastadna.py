@@ -149,7 +149,7 @@ def run():
 
 
   parser.add_argument("-n", "--name", action="store_true", help="Prints name in --view [-v]")
-  parser.add_argument("-ver", "--version", action="version", version="%(prog)s 0.1")
+  parser.add_argument("-ver", "--version", action="version", version="%(prog)s 1.0:release_candidate")
   parser.add_argument("-ll", "--line_length", nargs=1, help="Allows to decide lenght of line in prints")
 
   args = parser.parse_args()
@@ -159,7 +159,8 @@ def run():
   if args.file:
     if args.line_length:
       global LINE_LENGTH
-      LINE_LENGTH = int(args.line_length[0])
+      if(int(args.line_length[0]) > 0):
+        LINE_LENGTH = int(args.line_length[0])
     if args.length:
       print_lengths(args.file)
     elif args.view:
