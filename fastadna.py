@@ -126,12 +126,19 @@ def reverse(file_name, arg):
   fiter = read_all(file_name)
   for ff in fiter:
     headerStr, seq = ff 
+    print(headerStr)
     if(arg[0] == headerStr.split()[0][1:]):
       if(len(arg) > 1):
         coords = list(map(int,arg[1].split(':')))
-        print_long(seq[coords[0]:coords[1]:-1].translate(trans))
+        temp = seq[coords[0]:coords[1]]
+        temp = temp[::-1]
+        temp = temp.translate(trans)
+        #
+        print_long(seq[:coords[0]]+temp+seq[coords[1]:])
       else:
         print_long(seq[::-1].translate(trans))
+    else:
+      print_long(seq)
 
 
 def run():
