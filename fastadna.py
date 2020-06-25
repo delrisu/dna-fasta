@@ -126,12 +126,19 @@ def reverse(file_name, arg):
   fiter = read_all(file_name)
   for ff in fiter:
     headerStr, seq = ff 
+    print(headerStr)
     if(arg[0] == headerStr.split()[0][1:]):
       if(len(arg) > 1):
         coords = list(map(int,arg[1].split(':')))
-        print_long(seq[coords[0]:coords[1]:-1].translate(trans))
+        temp = seq[coords[0]:coords[1]]
+        temp = temp[::-1]
+        temp = temp.translate(trans)
+        #
+        print_long(seq[:coords[0]]+temp+seq[coords[1]:])
       else:
         print_long(seq[::-1].translate(trans))
+    else:
+      print_long(seq)
 
 
 def run():
@@ -149,7 +156,7 @@ def run():
 
 
   parser.add_argument("-n", "--name", action="store_true", help="Prints name in --view [-v]")
-  parser.add_argument("-ver", "--version", action="version", version="%(prog)s 0.1")
+  parser.add_argument("-ver", "--version", action="version", version="%(prog)s 1.0:release_candidate")
   parser.add_argument("-ll", "--line_length", nargs=1, help="Allows to decide lenght of line in prints")
 
   args = parser.parse_args()
@@ -159,7 +166,8 @@ def run():
   if args.file:
     if args.line_length:
       global LINE_LENGTH
-      LINE_LENGTH = int(args.line_length[0])
+      if(int(args.line_length[0]) > 0):
+        LINE_LENGTH = int(args.line_length[0])
     if args.length:
       print_lengths(args.file)
     elif args.view:
