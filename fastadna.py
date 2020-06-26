@@ -1,6 +1,7 @@
 import argparse
 import random
 from itertools import groupby
+from math import floor
 
 LINE_LENGTH = 70
 
@@ -84,7 +85,18 @@ def insert(file_name, arg):
       print_long(seq)
 
 def insert_random(file_name, arg):
-  pass_arg = [arg[0], arg[1], ''.join(random.choices("ACGT", k=int(arg[2])))]
+  if(len(arg) == 3):
+    pass_arg = [arg[0], arg[1], ''.join(random.choices("ACGT", k=int(arg[2])))]
+  if(len(arg) == 4):
+    how_many = floor(float(arg[3])/100 * float(arg[2]))
+    left = int(arg[2]) - how_many
+    retVal = ''
+    if(how_many > 0):
+      retVal += ''.join(random.choices("CG", k=int(how_many)))
+    if(left > 0):
+      retVal += ''.join(random.choices("AT", k=int(left)))
+    pass_arg = [arg[0], arg[1], ''.join(random.sample(retVal,len(retVal)))]
+    
   insert(file_name, pass_arg)
 
 def translocate(file_name, arg):
@@ -140,6 +152,18 @@ def reverse(file_name, arg):
     else:
       print_long(seq)
 
+def rename(file_name, arg):
+  fiter = read_all(file_name)
+  idx = 0
+  for ff in fiter:
+    headerStr, seq = ff 
+    if(int(arg[0]) == idx):
+      print('>'+arg[1])
+    else:
+      print(headerStr)
+    print_long(seq)
+    idx+=1
+
 
 def run():
   parser = argparse.ArgumentParser()
@@ -150,9 +174,10 @@ def run():
   group.add_argument("-v", "--view", nargs='+', help="Shows sequence. Use: --view name <start:end>")
   group.add_argument("-d", "--delete", nargs=2, help="Shows sequence with part deleted. Use: --delete name start:end")
   group.add_argument("-i", "--insert", nargs=3, help="Shows sequence with added part. Use: --insert name start additional_sequence")
-  group.add_argument("-ir", "--insert_random", nargs=3, help="Shows sequence with added random part. Use: --insert_random name start length")
+  group.add_argument("-ir", "--insert_random", nargs="+", help="Shows sequence with added random part. Use: --insert_random name start length <CG_percentage>")
   group.add_argument("-t", "--translocate", nargs="+", help="Translocates fragment. Use: --translocate name1 start:end <name2> index")
   group.add_argument("-r", "--reverse", nargs="+", help="Reverses and translates fragment. Use: --reverse name <start:end>")
+  group.add_argument("-rn", "--rename", nargs=2, help="Raname sequence. Use: --rename idx name")
 
 
   parser.add_argument("-n", "--name", action="store_true", help="Prints name in --view [-v]")
@@ -185,6 +210,8 @@ def run():
       translocate(args.file, args.translocate)
     elif args.reverse:
       reverse(args.file, args.reverse)
+    elif args.rename:
+      rename(args.file, args.rename)
   if args.length and not args.file:
     parser.error("File should be provided first, use --help [-h] for more information.")
 
