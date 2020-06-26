@@ -10,7 +10,7 @@ file - name of the file with extension in program catalog or path to file. ex: f
 --view [-v] - Shows sequence. Use: --view name <start:end>
 --delete [-d] - Shows sequence with part deleted. Use: --delete name start:end
 --insert [-i] - Shows sequence with added part. Use: --insert name start additional_sequence
---insert_random [-ir] - Shows sequence with added random part. Use: --insert_random name start length  <CG_percentage>
+--insert_random [-ir] - Shows sequence with added random part. Use: --insert_random name start length <CG_percentage>
 --translocate [-t] - Translocates fragment. Use: --translocate name1 start:end <name2> index
 --reverse [-r] - Reverses and translates fragment. Use: --reverse name <start:end>
 --rename [-rn] - Raname sequence. Use: --rename idx name
