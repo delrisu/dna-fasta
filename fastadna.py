@@ -77,7 +77,7 @@ def delete(file_name, arg):
 
 def insert(file_name, arg):
   if(len(arg) < 3):
-    arg.append(sys.stdin.read())
+    arg.append(sys.stdin.read().strip().replace('\r', '').replace('\n', ''))
   fiter = read_all(file_name)
   for ff in fiter:
     headerStr, seq = ff 
