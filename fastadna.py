@@ -2,6 +2,7 @@ import argparse
 import random
 from itertools import groupby
 from math import floor
+import sys
 
 LINE_LENGTH = 70
 
@@ -75,12 +76,14 @@ def delete(file_name, arg):
       print_long(seq)
 
 def insert(file_name, arg):
+  if(len(arg) < 3):
+    arg.append(sys.stdin.read())
   fiter = read_all(file_name)
   for ff in fiter:
     headerStr, seq = ff 
     print(headerStr)
     if(arg[0] == headerStr.split()[0][1:]):
-      print_long(insert_fragment(seq,int(arg[1]),arg[2]))
+      print_long(insert_fragment(seq,int(arg[1]),arg[2].strip()))
     else:
       print_long(seq)
 
@@ -173,7 +176,7 @@ def run():
   group.add_argument("-l","--length", help="shows length of all sequences.", action="store_true")
   group.add_argument("-v", "--view", nargs='+', help="Shows sequence. Use: --view name <start:end>")
   group.add_argument("-d", "--delete", nargs=2, help="Shows sequence with part deleted. Use: --delete name start:end")
-  group.add_argument("-i", "--insert", nargs=3, help="Shows sequence with added part. Use: --insert name start additional_sequence")
+  group.add_argument("-i", "--insert", nargs="*", help="Shows sequence with added part. Use: --insert name start additional_sequence")
   group.add_argument("-ir", "--insert_random", nargs="+", help="Shows sequence with added random part. Use: --insert_random name start length <CG_percentage>")
   group.add_argument("-t", "--translocate", nargs="+", help="Translocates fragment. Use: --translocate name1 start:end <name2> index")
   group.add_argument("-r", "--reverse", nargs="+", help="Reverses and translates fragment. Use: --reverse name <start:end>")
